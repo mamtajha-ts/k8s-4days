@@ -1,0 +1,23 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: readiness-pod
+  labels:
+    app: rns
+spec:
+  containers:
+  - name: readiness
+    image: nginx
+    args:
+    - /bin/bash
+    - -c
+    - service nginx start; touch /readiness; sleep 6000
+    readinessProbe:
+      exec:
+        command:
+        - cat
+        - /readiness
+      initialDelaySeconds: 5
+      periodSeconds: 5
+    ports:
+    - containerPort: 80
